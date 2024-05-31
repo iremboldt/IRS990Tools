@@ -1,7 +1,7 @@
 import requests
 
-orgname = ''
+eid = ''
 
-url = 'https://projects.propublica.org/nonprofits/api/v2'
-response = requests.get(url+'/search.json?q='+orgname)
+url = r'https://projects.propublica.org/nonprofits/api/v2/organizations/'
+response = requests.get(url+eid+'.json')
 print(response.text)
