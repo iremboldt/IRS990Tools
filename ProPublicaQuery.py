@@ -20,3 +20,13 @@ for eid in eids:
   response = requests.get(OrgSearchURL+eid+'.json')
   #Parse the json and append data to the list, or create a series of csvs
 return(TaxInfo)
+
+def writeCSV():
+    import csv
+  import json
+  import requests
+  response=requests.get('https://projects.propublica.org/nonprofits/api/v2/search.json?q=Civic%20Nebraska')
+  x=json.loads(response.content)
+  for x in x:
+    #https://stackoverflow.com/questions/1871524/how-can-i-convert-json-to-csv
+    f.writerow([x["Organizations"]["ein"])
