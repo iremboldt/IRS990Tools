@@ -26,6 +26,7 @@ def writeCSV():
   import json
   import requests
   import pandas as pd
+  eidlist=[]
   response=requests.get('https://projects.propublica.org/nonprofits/api/v2/search.json?q='+name)
   x=json.loads(response.content)
   #for x in x:
@@ -38,9 +39,9 @@ def writeCSV():
     i=0
     while i<len(data.index):
       row=data['organizations'].loc[data.index[i]]
-      print(row['ein']
+      eidlist.append(row['eid'])
       i+=1
   else:
     row=data['organization'].loc[data.index[0]]
-    print(row['ein']
+    eidlist.append(row['eid'])
     
