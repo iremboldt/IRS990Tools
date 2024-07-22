@@ -25,8 +25,22 @@ def writeCSV():
     import csv
   import json
   import requests
-  response=requests.get('https://projects.propublica.org/nonprofits/api/v2/search.json?q=Civic%20Nebraska')
+  import pandas as pd
+  response=requests.get('https://projects.propublica.org/nonprofits/api/v2/search.json?q='+name)
   x=json.loads(response.content)
-  for x in x:
+  #for x in x:
     #https://stackoverflow.com/questions/1871524/how-can-i-convert-json-to-csv
-    f.writerow([x["Organizations"]["ein"])
+    #f.writerow([x["Organizations"]["ein"])
+  
+  #got this to work!!
+  data=pd.read_json(json.dumps(jsonstring))
+  if len(data.index)>1:
+    i=0
+    while i<len(data.index):
+      row=data['organizations'].loc[data.index[i]]
+      print(row['ein']
+      i+=1
+  else:
+    row=data['organization'].loc[data.index[0]]
+    print(row['ein']
+    
