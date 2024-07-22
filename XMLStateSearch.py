@@ -36,9 +36,11 @@ def removeStates(directory)
             print('child index out of range for '+filename)
 
 def getEIN(directory)
+    eidList=[]
     for file in os.listdir(directory):
         filename = os.fsencode(file)
         tree = ET.parse(path+'\\'+filename)
         root = tree.getroot()
         EIN = tree.find('.//{http://www.irs.gov/efile}ReturnHeader/{http://www.irs.gov/efile}Filer/{http://www.irs.gov/efile}EIN').text
+        eidList.append(EIN)
         
