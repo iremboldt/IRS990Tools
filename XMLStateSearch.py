@@ -1,5 +1,6 @@
 import os
 import xml.etree.ElementTree as ET
+from zipfile import ZipFile 
 #This uses Element Tree, an XML parser library for python
 
 #https://www.irs.gov/charities-non-profits/form-990-series-downloads
@@ -12,6 +13,11 @@ def get990s(year)
     for month in monthcodes:
         #save the .zip for each one, potentially even extract the data as well in this function
         'https://apps.irs.gov/pub/epostcard/990/xml/'+year+'/'+year+'_TEOS_XML_'+month+'.zip'
+
+# input is zip file location, output is desired extract location
+def extractzip(input,output)
+with ZipFile(input, 'r') as zObject: 
+    zObject.extractall(path=output) 
 
 #iterate through files in the directory
 for file in os.listdir(directory):
