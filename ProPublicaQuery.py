@@ -29,8 +29,8 @@ def writeCSV():
   eidList=[]
   #populate nplist with values from non profit list, url encoded
   nplist=[]
-  response=requests.get('https://projects.propublica.org/nonprofits/api/v2/search.json?q='+name)
-  x=json.loads(response.content)
+  
+  #x=json.loads(response.content)
   #for x in x:
     #https://stackoverflow.com/questions/1871524/how-can-i-convert-json-to-csv
     #f.writerow([x["Organizations"]["ein"])
@@ -39,6 +39,9 @@ def writeCSV():
   #the list i got sewhat differs from name, eg ampersand being spelled out
   data=pd.read_json(json.dumps(jsonstring))
   for np in nplist:
+      response=requests.get('https://projects.propublica.org/nonprofits/api/v2/search.json?q='+np)
+      npjson=json.loads(response.content)
+      data=pd.read_json(json.dumps(npjspn))
       if len(data.index)>1:
         i=0
         while i<len(data.index):
