@@ -26,7 +26,9 @@ def writeCSV():
   import json
   import requests
   import pandas as pd
-  eidlist=[]
+  eidList=[]
+  #populate nplist with values from non profit list, url encoded
+  nplist=[]
   response=requests.get('https://projects.propublica.org/nonprofits/api/v2/search.json?q='+name)
   x=json.loads(response.content)
   #for x in x:
@@ -34,14 +36,24 @@ def writeCSV():
     #f.writerow([x["Organizations"]["ein"])
   
   #got this to work!!
+  #the list i got sewhat differs from name, eg ampersand being spelled out
   data=pd.read_json(json.dumps(jsonstring))
-  if len(data.index)>1:
-    i=0
-    while i<len(data.index):
-      row=data['organizations'].loc[data.index[i]]
-      eidlist.append(row['eid'])
-      i+=1
-  else:
-    row=data['organization'].loc[data.index[0]]
-    eidlist.append(row['eid'])
+  for np in nplist:
+      if len(data.index)>1:
+        i=0
+        while i<len(data.index):
+          row=data['organizations'].loc[data.index[i]]
+          try:
+              eidList.append(row['eid'])
+          except:
+              print('eid does not exist for '+np)
+          i+=1
+      elif len(data.index)==1:
+        row=data['organization'].loc[data.index[0]]
+        try:
+            eidList.append(row['eid'])
+        except:
+            print('eid does not exist for '+np)
+      else:
+        print('data not found for'+np)
     
