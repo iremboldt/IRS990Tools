@@ -19,18 +19,26 @@ def extractzip(input,output)
 with ZipFile(input, 'r') as zObject: 
     zObject.extractall(path=output) 
 
-#iterate through files in the directory
-for file in os.listdir(directory):
-    filename = os.fsencode(file)
-    #the next three lines, when run individually, return the state code as a string. When run together, or in a script, it breaks for some reason
-    tree = ET.parse(path+'\\'+filename)
-    root = tree.getroot()
-    state = root[0][5][4][2].text
-    #put in a try catch because the previous three strings kept messing up, also the XMLs have slight variations and I wanted a log of which ones to do manually or with an adjusted script
-    try:
-        if state != ‘NE’:
-            os.remove(path+'\\'+filename)
-        else:
-            continue
-    except:
-        print('child index out of range for '+filename)
+#iterate through files in the directory and remove non Nebraska States
+def removeStates(directory)
+    for file in os.listdir(directory):
+        filename = os.fsencode(file)
+        tree = ET.parse(path+'\\'+filename)
+        root = tree.getroot()
+        state = tree.find('.//{http://www.irs.gov/efile}ReturnHeader/{http://www.irs.gov/efile}Filer/{http://www.irs.gov/efile}USAddress/{http://www.irs.gov/efile}StateAbbreviationCd').text
+        #put in a try catch because the previous three strings kept messing up, also the XMLs have slight variations and I wanted a log of which ones to do manually or with an adjusted script
+        try:
+            if state != ‘NE’:
+                os.remove(path+'\\'+filename)
+            else:
+                continue
+        except:
+            print('child index out of range for '+filename)
+
+def getEIN(directory)
+    for file in os.listdir(directory):
+        filename = os.fsencode(file)
+        tree = ET.parse(path+'\\'+filename)
+        root = tree.getroot()
+        EIN = tree.find('.//{http://www.irs.gov/efile}ReturnHeader/{http://www.irs.gov/efile}Filer/{http://www.irs.gov/efile}EIN').text
+        
