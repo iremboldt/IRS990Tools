@@ -5,19 +5,19 @@ NameSearchURL = r'https://projects.propublica.org/nonprofits/api/v2/search.json?
 #add "EIN".json to the end of the url to get 990 info for the org. ex. organizations/123456789.json
 OrgSearchURL = r'https://projects.propublica.org/nonprofits/api/v2/organizations/'
 
-eids = []
+eins = []
 names = []
 
-def getEIDs(names):
+def geteins(names):
 for name in names:
   response = requests.get(NameSearchURL+name)
-  #Parse the returned json for the EID and append to eids list
-return(eids)
+  #Parse the returned json for the ein and append to eins list
+return(eins)
 
-def getTaxInfo(eids):
+def getTaxInfo(eins):
 TaxInfo = []
-for eid in eids:
-  response = requests.get(OrgSearchURL+eid+'.json')
+for ein in eins:
+  response = requests.get(OrgSearchURL+ein+'.json')
   #Parse the json and append data to the list, or create a series of csvs
 return(TaxInfo)
 
@@ -26,7 +26,7 @@ def writeCSV():
   import json
   import requests
   import pandas as pd
-  eidList=[]
+  einList=[]
   #populate nplist with values from non profit list, url encoded
   nplist=[]
   
@@ -47,16 +47,16 @@ def writeCSV():
         while i<len(data.index):
           row=data['organizations'].loc[data.index[i]]
           try:
-              eidList.append(row['eid'])
+              einList.append(row['ein'])
           except:
-              print('eid does not exist for '+np)
+              print('ein does not exist for '+np)
           i+=1
       elif len(data.index)==1:
         row=data['organization'].loc[data.index[0]]
         try:
-            eidList.append(row['eid'])
+            einList.append(row['ein'])
         except:
-            print('eid does not exist for '+np)
+            print('ein does not exist for '+np)
       else:
         print('data not found for'+np)
     
