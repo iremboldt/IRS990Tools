@@ -23,7 +23,7 @@ with ZipFile(input, 'r') as zObject:
 def removeStates(directory):
     for file in os.listdir(directory):
         filename = os.fsencode(file)
-        tree = ET.parse(path+'\\'+filename)
+        tree = ET.parse(directory+'\\'+filename)
         root = tree.getroot()
         state = tree.find('.//{http://www.irs.gov/efile}ReturnHeader/{http://www.irs.gov/efile}Filer/{http://www.irs.gov/efile}USAddress/{http://www.irs.gov/efile}StateAbbreviationCd').text
         #put in a try catch because the previous three strings kept messing up, also the XMLs have slight variations and I wanted a log of which ones to do manually or with an adjusted script
