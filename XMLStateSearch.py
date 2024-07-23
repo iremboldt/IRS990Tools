@@ -29,7 +29,7 @@ def removeStates(directory):
         #put in a try catch because the previous three strings kept messing up, also the XMLs have slight variations and I wanted a log of which ones to do manually or with an adjusted script
         try:
             if state != ‘NE’:
-                os.remove(path+'\\'+filename)
+                os.remove(directory+'\\'+filename)
             else:
                 continue
         except:
