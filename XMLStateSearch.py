@@ -39,6 +39,7 @@ def removeStates(directory):
         except:
             print('child index out of range for '+filename)
 
+#This method is developed from the removeStates function, but it extracts EINs from the expected xml path and adds them to a list
 def getEIN(directory):
     eidList=[]
     for file in os.listdir(directory):
