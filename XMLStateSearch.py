@@ -35,7 +35,10 @@ def removeStates(directory):
                 else:
                     continue
             except:
-                print('child index out of range for '+filename)
+                if tree.find('.//{http://www.irs.gov/efile}ReturnHeader/{http://www.irs.gov/efile}Filer/{http://www.irs.gov/efile}ForeignAddress/{http://www.irs.gov/efile}CountryCd').text != 'US':
+                    os.remove(directory+'\\'+filename)
+                else:
+                    print('child index out of range for '+filename)
         except:
             print('State not found at expected index for '+filename)
         #put in a try catch because the previous three strings kept messing up, also the XMLs have slight variations and I wanted a log of which ones to do manually or with an adjusted script
