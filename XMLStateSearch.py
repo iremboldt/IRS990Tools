@@ -22,7 +22,8 @@ with ZipFile(input, 'r') as zObject:
 #iterate through files in the directory and remove non Nebraska States
 def removeStates(directory):
     for file in os.listdir(directory):
-        filename = os.fsencode(file)
+        temppath = os.fsencode(file)
+        filename = os.fsdecode(temppath)
         tree = ET.parse(directory+'\\'+filename)
         root = tree.getroot()
         #the following code replaced trying to search by index, and I just put in the xml path. the part that threw me off was starting with the irs url each time.
