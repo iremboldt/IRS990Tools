@@ -26,7 +26,10 @@ def removeStates(directory):
         tree = ET.parse(directory+'\\'+filename)
         root = tree.getroot()
         #the following code replaced trying to search by index, and I just put in the xml path. the part that threw me off was starting with the irs url each time.
-        state = tree.find('.//{http://www.irs.gov/efile}ReturnHeader/{http://www.irs.gov/efile}Filer/{http://www.irs.gov/efile}USAddress/{http://www.irs.gov/efile}StateAbbreviationCd').text
+        try:
+            state = tree.find('.//{http://www.irs.gov/efile}ReturnHeader/{http://www.irs.gov/efile}Filer/{http://www.irs.gov/efile}USAddress/{http://www.irs.gov/efile}StateAbbreviationCd').text
+        except:
+            print('State not found at expected index for '+filename)
         #put in a try catch because the previous three strings kept messing up, also the XMLs have slight variations and I wanted a log of which ones to do manually or with an adjusted script
         try:
             if state != ‘NE’:
