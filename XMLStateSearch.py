@@ -44,7 +44,7 @@ def removeStates(directory):
                 print('State not found at expected index for '+filename)
         #put in a try catch because the previous three strings kept messing up, also the XMLs have slight variations and I wanted a log of which ones to do manually or with an adjusted script
 
-def removeCity(direcory):
+def removeCity(directory):
         for file in os.listdir(directory):
         temppath = os.fsencode(file)
         filename = os.fsdecode(temppath)
