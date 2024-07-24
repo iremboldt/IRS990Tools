@@ -75,22 +75,24 @@ def xmltocsv(directory):
     cols = ["totalassets", "totalrevenue", "totalexpenses", "liabilities"] 
     rows = [] 
       
-    # Parsing the XML file 
-    tree = ET.parse(r'C:\MyFiles\Projects\NonProfits\NebraskaCombined\202301789349100910_public.xml') 
-    root = tree.getroot()
-    # These dumb ass xml paths keep returning "None" instead of a number. Not sure why but I went through and checked everything and it should work. Once I figure that out I can start appending each xml as a row in a csv.
-    totalrevenue = tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990PF/{http://www.irs.gov/efile}AnalysisOfRevenueAndExpenses/{{http://www.irs.gov/efile}TotalRevAndExpnssAmt').text 
-    totalassets = tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990PF/{http://www.irs.gov/efile}ChgInNetAssetsFundBalancesGrp/{http://www.irs.gov/efile}TotNetAstOrFundBalancesEOYAmt').text
-    totalexpenses = tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990PF/{http://www.irs.gov/efile}AnalysisOfRevenueAndExpenses/{http://www.irs.gov/efile}TotalExpensesDsbrsChrtblAmt').text 
-    liabilities = tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990PF/{http://www.irs.gov/efile}AnalysisOfRevenueAndExpenses/{http://www.irs.gov/efile}TotalLiabilitiesBOYAmt').text 
-        
-      
-    rows.append({"totalassets": totalassets, 
-                 "totalrevenue": totalrevenue, 
-                 "totalexpenses": totalexpenses, 
-                 "liabilities": liabilities,}) 
-      
-    df = pd.DataFrame(rows, columns=cols) 
+    # Parsing the XML file
+    for file in os.listdir(directory):
+        filename = os.fsencode(file)
+        tree = ET.parse(path+'\\'+filename)
+        root = tree.getroot()
+        # These dumb ass xml paths keep returning "None" instead of a number. Not sure why but I went through and checked everything and it should work. Once I figure that out I can start appending each xml as a row in a csv.
+        totalrevenue = tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990PF/{http://www.irs.gov/efile}AnalysisOfRevenueAndExpenses/{{http://www.irs.gov/efile}TotalRevAndExpnssAmt').text 
+        totalassets = tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990PF/{http://www.irs.gov/efile}ChgInNetAssetsFundBalancesGrp/{http://www.irs.gov/efile}TotNetAstOrFundBalancesEOYAmt').text
+        totalexpenses = tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990PF/{http://www.irs.gov/efile}AnalysisOfRevenueAndExpenses/{http://www.irs.gov/efile}TotalExpensesDsbrsChrtblAmt').text 
+        liabilities = tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990PF/{http://www.irs.gov/efile}AnalysisOfRevenueAndExpenses/{http://www.irs.gov/efile}TotalLiabilitiesBOYAmt').text 
+            
+          
+        rows.append({"totalassets": totalassets, 
+                     "totalrevenue": totalrevenue, 
+                     "totalexpenses": totalexpenses, 
+                     "liabilities": liabilities,}) 
+        # This will probably need updated, not sure if the syntax is right for a for loop. Might just recreate the data frame instead of appending a row. Probably worth making the dataframe a global variable, or outside the for loop  
+        df = pd.DataFrame(rows, columns=cols) 
       
     # Writing dataframe to csv 
     df.to_csv(r'C:\MyFiles\Projects\NonProfits\test.csv')
