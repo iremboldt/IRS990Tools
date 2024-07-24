@@ -1,6 +1,7 @@
 import os
 import xml.etree.ElementTree as ET
-from zipfile import ZipFile 
+from zipfile import ZipFile
+import pandas as pd
 #This uses Element Tree, an XML parser library for python
 
 #https://www.irs.gov/charities-non-profits/form-990-series-downloads
