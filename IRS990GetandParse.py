@@ -25,13 +25,13 @@ Class IRS990:
             for month in monthcodes:
                 #Current IRS 990 website
                 url = 'https://apps.irs.gov/pub/epostcard/990/xml/'+year+'/'+year+'_TEOS_XML_'+month+'.zip'
-                file = requests.get(url, stream=True)
-                dump = file.raw
+                file = requests.get(url)
+                #dump = file.raw
                 location = os.path.abspath(directory)
                 filename = 'returns'+month+year+'.zip'
-                with open(filename, 'wb') as location:
-                    shutil.copyfileobj(dump, location)
-                del dump
+                with open(location+filename, 'wb') as filelocation:
+                    filelocation.write(file.content)
+                #del dump
                 #import urllib.request
                 #f = open('00000001.jpg','wb')
                 #f.write(urllib.request.urlopen('http://www.gunnerkrigg.com//comics/00000001.jpg').read())
