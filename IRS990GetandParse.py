@@ -2,6 +2,8 @@ import os
 import xml.etree.ElementTree as ET
 from zipfile import ZipFile
 import pandas as pd
+import requests
+import urllib.request
 
 Class IRS990:
 
@@ -23,13 +25,17 @@ Class IRS990:
             for month in monthcodes:
                 #Current IRS 990 website
                 url = 'https://apps.irs.gov/pub/epostcard/990/xml/'+year+'/'+year+'_TEOS_XML_'+month+'.zip'
-                file = requests.get(url, stream=True
+                file = requests.get(url, stream=True)
                 dump = file.raw
                 location = os.path.abspath(directory)
                 filename = 'returns'+month+year+'.zip'
                 with open(filename, 'wb') as location:
                     shutil.copyfileobj(dump, location)
                 del dump
+                #import urllib.request
+                #f = open('00000001.jpg','wb')
+                #f.write(urllib.request.urlopen('http://www.gunnerkrigg.com//comics/00000001.jpg').read())
+                #f.close()
                 
     #iterate through files in the directory and remove xmls with business address not in Nebraska (NE)
     def removeStates(directory):
