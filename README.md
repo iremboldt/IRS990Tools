@@ -1,8 +1,10 @@
 # NonProfitsLNK
 
-This repository contains code used to extract nonprofit EIN, 990, and name information from databases managed by Propublica and the IRS.
+This repository contains code used to extract information from nonprofit 990 filings, using raw IRS data, and the ProPublica nonprofit search API.
 
-the irs site where you can download the .xml files is as follows:
+IRS 990 sources:
 https://www.irs.gov/charities-non-profits/form-990-series-downloads
-
 For entities making under $50,000: https://www.irs.gov/charities-non-profits/tax-exempt-organization-search-bulk-data-downloads#990-n
+
+Propublica Non-Profit Search API documentation
+https://projects.propublica.org/nonprofits/api
