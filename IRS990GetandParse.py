@@ -100,7 +100,16 @@ Class IRS990:
             filename = os.fsencode(file)
             tree = ET.parse(path+'\\'+filename)
             root = tree.getroot()
-            # These dumb ass xml paths keep returning "None" instead of a number. Not sure why but I went through and checked everything and it should work. Once I figure that out I can start appending each xml as a row in a csv.
+            if tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990PF') != None:
+                subroot = tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990PF')
+                for child in subroot:
+                  taglist = {x.tag for x in subroot.findall(child.tag+"/*")}
+                  for subtag in taglist:
+                      rows.append({tag:subroot.find(child.tag+"/*")})
+            elif tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990EZ') != None:
+                #Space
+            if tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990') != None:
+                #Space
             totalrevenue = tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990PF/{http://www.irs.gov/efile}AnalysisOfRevenueAndExpenses/{{http://www.irs.gov/efile}TotalRevAndExpnssAmt').text 
             totalassets = tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990PF/{http://www.irs.gov/efile}ChgInNetAssetsFundBalancesGrp/{http://www.irs.gov/efile}TotNetAstOrFundBalancesEOYAmt').text
             totalexpenses = tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990PF/{http://www.irs.gov/efile}AnalysisOfRevenueAndExpenses/{http://www.irs.gov/efile}TotalExpensesDsbrsChrtblAmt').text 
