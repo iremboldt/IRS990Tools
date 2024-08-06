@@ -90,7 +90,21 @@ Class IRS990:
             eidList.append(EIN)
     
     #WIP
-    
+
+    #pathGen creates strings for the fully qualified xml path, reducing the amount of duplicate columns in a PD dataframe. It will still need some editing, such as adding a 2 to the end of actually duplicated paths.
+    def pathGen(fn):
+        path = []
+        it = ET.iterparse(fn, events=('start', 'end'))
+        for evt, el in it:
+            if evt == 'start':
+                path.append(el.tag)
+                yield '/'.join(path)
+            else:
+                path.pop()
+    for pth in pathGen(file):
+        print(pth)
+
+    # This will convert multiple 990 xml documents into rows on a csv, which will them be able to imported to excel to be sorted
     def xmltocsv(directory):        
         cols = ["Tag","Value"] 
         rows = [] 
