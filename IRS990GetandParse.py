@@ -90,9 +90,9 @@ Class IRS990:
             eidList.append(EIN)
     
     #WIP
-    '''
+    
     def xmltocsv(directory):        
-        cols = ["totalassets", "totalrevenue", "totalexpenses", "liabilities"] 
+        cols = ["Tag","Value"] 
         rows = [] 
           
         # Parsing the XML file
@@ -101,11 +101,8 @@ Class IRS990:
             tree = ET.parse(path+'\\'+filename)
             root = tree.getroot()
             if tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990PF') != None:
-                subroot = tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990PF')
-                for child in subroot:
-                  taglist = {x.tag for x in subroot.findall(child.tag+"/*")}
-                  for subtag in taglist:
-                      rows.append({tag:subroot.find(child.tag+"/*")})
+                for elem in tree.iter():
+                    rows.append(elem.tag+"|"+elem.text)
             elif tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990EZ') != None:
                 #Space
             if tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990') != None:
@@ -115,14 +112,11 @@ Class IRS990:
             totalexpenses = tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990PF/{http://www.irs.gov/efile}AnalysisOfRevenueAndExpenses/{http://www.irs.gov/efile}TotalExpensesDsbrsChrtblAmt').text 
             liabilities = tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990PF/{http://www.irs.gov/efile}AnalysisOfRevenueAndExpenses/{http://www.irs.gov/efile}TotalLiabilitiesBOYAmt').text 
                 
-              
-            rows.append({"totalassets": totalassets, 
-                         "totalrevenue": totalrevenue, 
-                         "totalexpenses": totalexpenses, 
-                         "liabilities": liabilities,}) 
-            # This will probably need updated, not sure if the syntax is right for a for loop. Might just recreate the data frame instead of appending a row. Probably worth making the dataframe a global variable, or outside the for loop  
-            df = pd.DataFrame(rows, columns=cols) 
-          
+            '''
+            rows.append({"totalassets": totalassets, "totalrevenue": totalrevenue, "totalexpenses": totalexpenses, "liabilities": liabilities,})  
+            df = pd.DataFrame(rows, columns=cols)
+            '''
+            df=pd.DataFrame(rows)
         # Writing dataframe to csv 
-        df.to_csv(r'C:\MyFiles\Projects\NonProfits\test.csv')
-    '''
+         df.to_csv(directory+'\990data.csv')
+    
