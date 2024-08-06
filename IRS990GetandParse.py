@@ -107,12 +107,12 @@ Class IRS990:
                 #Space
             if tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990') != None:
                 #Space
+            '''
             totalrevenue = tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990PF/{http://www.irs.gov/efile}AnalysisOfRevenueAndExpenses/{{http://www.irs.gov/efile}TotalRevAndExpnssAmt').text 
             totalassets = tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990PF/{http://www.irs.gov/efile}ChgInNetAssetsFundBalancesGrp/{http://www.irs.gov/efile}TotNetAstOrFundBalancesEOYAmt').text
             totalexpenses = tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990PF/{http://www.irs.gov/efile}AnalysisOfRevenueAndExpenses/{http://www.irs.gov/efile}TotalExpensesDsbrsChrtblAmt').text 
             liabilities = tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990PF/{http://www.irs.gov/efile}AnalysisOfRevenueAndExpenses/{http://www.irs.gov/efile}TotalLiabilitiesBOYAmt').text 
                 
-            '''
             rows.append({"totalassets": totalassets, "totalrevenue": totalrevenue, "totalexpenses": totalexpenses, "liabilities": liabilities,})  
             df = pd.DataFrame(rows, columns=cols)
             '''
