@@ -101,8 +101,20 @@ Class IRS990:
                 yield '/'.join(path)
             else:
                 path.pop()
-    for pth in pathGen(file):
-        print(pth)
+
+    #Runs pathGen and populates a list of paths for later use in xmltocsv as column headers
+    def createPathList(list)
+        for pth in pathGen(file):
+            list.append(pth)
+        '''
+        list=[]
+        i=0
+        for pth in pathGen(file):
+            k=i+1
+            for j in range(k, _size):
+            if x[i] == x[j] and x[i] not in list:
+                list.append(x[i])
+        '''        
 
     # This will convert multiple 990 xml documents into rows on a csv, which will them be able to imported to excel to be sorted
     def xmltocsv(directory):        
