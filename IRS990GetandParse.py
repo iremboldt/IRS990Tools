@@ -106,6 +106,7 @@ Class IRS990:
     def createPathList(list)
         for pth in pathGen(file):
             list.append(pth)
+        #Gotta find a way to either iterate through the completed list, or while pathGen is returning each value/row
         '''
         list=[]
         i=0
