@@ -124,26 +124,45 @@ Class IRS990:
           
         # Parsing the XML file
         for file in os.listdir(directory):
-            filename = os.fsencode(file)
+            #Assign path like normal
+            temppath = os.fsencode(file)
+            filename = os.fsdecode(temppath)
             tree = ET.parse(path+'\\'+filename)
             root = tree.getroot()
+            #Check to see what the 990 format is, just to avoid weird incompatibilities
             if tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990PF') != None:
-                for elem in tree.iter():
-                    rows.append(elem.tag+"|"+elem.text)
-            elif tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990EZ') != None:
-                #Space
-            if tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990') != None:
-                #Space
-            '''
-            totalrevenue = tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990PF/{http://www.irs.gov/efile}AnalysisOfRevenueAndExpenses/{{http://www.irs.gov/efile}TotalRevAndExpnssAmt').text 
-            totalassets = tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990PF/{http://www.irs.gov/efile}ChgInNetAssetsFundBalancesGrp/{http://www.irs.gov/efile}TotNetAstOrFundBalancesEOYAmt').text
-            totalexpenses = tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990PF/{http://www.irs.gov/efile}AnalysisOfRevenueAndExpenses/{http://www.irs.gov/efile}TotalExpensesDsbrsChrtblAmt').text 
-            liabilities = tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990PF/{http://www.irs.gov/efile}AnalysisOfRevenueAndExpenses/{http://www.irs.gov/efile}TotalLiabilitiesBOYAmt').text 
-                
-            rows.append({"totalassets": totalassets, "totalrevenue": totalrevenue, "totalexpenses": totalexpenses, "liabilities": liabilities,})  
-            df = pd.DataFrame(rows, columns=cols)
-            '''
+                #Create rows list for table
+                rows=[]
+                for elem in root:
+                    #Create dictionary for each row, should assign columns as well for each element name
+                    row={}
+                    for node in tree.iter():
+                        row.update(node.attrib)
+                        if node.text and not node.text.isspace():
+                            row[node.tag]=node.text
+                    rows.append(row)
             df=pd.DataFrame(rows)
-        # Writing dataframe to csv 
-         df.to_csv(directory+'\990data.csv')
+            df.to_csv(directory+'\990PFdata.csv')
+            elif tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990EZ') != None:
+                rows=[]
+                for elem in root:
+                    row={}
+                    for node in tree.iter():
+                        row.update(node.attrib)
+                        if node.text and not node.text.isspace():
+                            row[node.tag]=node.text
+                    rows.append(row)  
+            df=pd.DataFrame(rows)
+            df.to_csv(directory+'\990EZdata.csv')
+            else tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990') != None:
+                rows=[]
+                for elem in root:
+                    row={}
+                    for node in tree.iter():
+                        row.update(node.attrib)
+                        if node.text and not node.text.isspace():
+                            row[node.tag]=node.text
+                    rows.append(row)
+            df=pd.DataFrame(rows)
+            df.to_csv(directory+'\990data.csv')
     
