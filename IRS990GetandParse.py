@@ -84,7 +84,7 @@ Class IRS990:
         eidList=[]
         for file in os.listdir(directory):
             filename = os.fsencode(file)
-            tree = ET.parse(path+'\\'+filename)
+            tree = ET.parse(directory+'\\'+filename)
             root = tree.getroot()
             EIN = tree.find('.//{http://www.irs.gov/efile}ReturnHeader/{http://www.irs.gov/efile}Filer/{http://www.irs.gov/efile}EIN').text
             eidList.append(EIN)       
@@ -99,7 +99,7 @@ Class IRS990:
             #Assign path like normal
             temppath = os.fsencode(file)
             filename = os.fsdecode(temppath)
-            tree = ET.parse(path+'\\'+filename)
+            tree = ET.parse(directory+'\\'+filename)
             root = tree.getroot()
             #Check to see what the 990 format is, just to avoid weird incompatibilities
             if tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990PF') != None:
