@@ -119,10 +119,10 @@ Class IRS990:
 
     # This will convert multiple 990 xml documents into rows on a csv, which will them be able to imported to excel to be sorted
     def xmltocsv(directory):        
-        cols = ["Tag","Value"] 
-        rows = [] 
-          
         # Parsing the XML file
+        rows=[]
+        rowsPF=[]
+        rowsEZ=[]
         for file in os.listdir(directory):
             #Assign path like normal
             temppath = os.fsencode(file)
@@ -132,7 +132,6 @@ Class IRS990:
             #Check to see what the 990 format is, just to avoid weird incompatibilities
             if tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990PF') != None:
                 #Create rows list for table
-                rows=[]
                 for elem in root:
                     #Create dictionary for each row, should assign columns as well for each element name
                     row={}
@@ -140,19 +139,18 @@ Class IRS990:
                         row.update(node.attrib)
                         if node.text and not node.text.isspace():
                             row[node.tag]=node.text
-                    rows.append(row)
-            df=pd.DataFrame(rows)
+                    rowsPF.append(row)
+            df=pd.DataFrame(rowsPF)
             df.to_csv(directory+'\990PFdata.csv')
             elif tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990EZ') != None:
-                rows=[]
                 for elem in root:
                     row={}
                     for node in tree.iter():
                         row.update(node.attrib)
                         if node.text and not node.text.isspace():
                             row[node.tag]=node.text
-                    rows.append(row)  
-            df=pd.DataFrame(rows)
+                    rowsEZ.append(row)  
+            df=pd.DataFrame(rowsEZ)
             df.to_csv(directory+'\990EZdata.csv')
             else tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990') != None:
                 rows=[]
