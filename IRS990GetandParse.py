@@ -141,7 +141,7 @@ Class IRS990:
                             row[node.tag]=node.text
                     rowsPF.append(row)
             df=pd.DataFrame(rowsPF)
-            df.drop_duplicates()
+            #df.drop_duplicates()
             df.to_csv(directory+'\990PFdata.csv')
             elif tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990EZ') != None:
                 for elem in root:
@@ -152,7 +152,7 @@ Class IRS990:
                             row[node.tag]=node.text
                     rowsEZ.append(row)  
             df=pd.DataFrame(rowsEZ)
-            df.drop_duplicates()
+            #df.drop_duplicates()
             df.to_csv(directory+'\990EZdata.csv')
             else tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990') != None:
                 rows=[]
@@ -164,6 +164,6 @@ Class IRS990:
                             row[node.tag]=node.text
                     rows.append(row)
             df=pd.DataFrame(rows)
-            df.drop_duplicates()
+            #df.drop_duplicates()
             df.to_csv(directory+'\990data.csv')
     
