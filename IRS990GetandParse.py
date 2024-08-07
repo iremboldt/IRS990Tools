@@ -110,9 +110,7 @@ Class IRS990:
                     if node.text and not node.text.isspace():
                         row[node.tag]=node.text
                 rowsPF.append(row)
-            df=pd.DataFrame(rowsPF)
-            #df.drop_duplicates()
-            df.to_csv(directory+'\990PFdata.csv')
+
             elif tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990EZ') != None:
                 row={}
                 for node in tree.iter():
@@ -120,9 +118,7 @@ Class IRS990:
                     if node.text and not node.text.isspace():
                         row[node.tag]=node.text
                 rowsEZ.append(row)  
-            df=pd.DataFrame(rowsEZ)
-            #df.drop_duplicates()
-            df.to_csv(directory+'\990EZdata.csv')
+
             else tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990') != None:
                 row={}
                 for node in tree.iter():
@@ -130,7 +126,13 @@ Class IRS990:
                     if node.text and not node.text.isspace():
                         row[node.tag]=node.text
                 rows.append(row)
+            
+            #Export all data into csvs
             df=pd.DataFrame(rows)
-            #df.drop_duplicates()
             df.to_csv(directory+'\990data.csv')
-    
+            
+            df=pd.DataFrame(rowsPF)
+            df.to_csv(directory+'\990PFdata.csv')
+            
+            df=pd.DataFrame(rowsEZ)
+            df.to_csv(directory+'\990EZdata.csv')
