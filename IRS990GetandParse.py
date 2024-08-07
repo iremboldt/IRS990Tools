@@ -9,7 +9,7 @@ Class IRS990:
 
     def __init__(self,directory,*years):
         self.directory=directory
-        self.years=years
+        self.years=[years]
 
     # input is zip file location, output is desired extract location
     def extractzip(directory):
