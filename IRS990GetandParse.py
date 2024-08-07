@@ -103,38 +103,33 @@ Class IRS990:
             root = tree.getroot()
             #Check to see what the 990 format is, just to avoid weird incompatibilities
             if tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990PF') != None:
-                #Create rows list for table
-                for elem in root:
-                    #Create dictionary for each row, should assign columns as well for each element name
-                    row={}
-                    for node in tree.iter():
-                        row.update(node.attrib)
-                        if node.text and not node.text.isspace():
-                            row[node.tag]=node.text
-                    rowsPF.append(row)
+                #Create dictionary for each row, should assign columns as well for each element name
+                row={}
+                for node in tree.iter():
+                    row.update(node.attrib)
+                    if node.text and not node.text.isspace():
+                        row[node.tag]=node.text
+                rowsPF.append(row)
             df=pd.DataFrame(rowsPF)
             #df.drop_duplicates()
             df.to_csv(directory+'\990PFdata.csv')
             elif tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990EZ') != None:
-                for elem in root:
-                    row={}
-                    for node in tree.iter():
-                        row.update(node.attrib)
-                        if node.text and not node.text.isspace():
-                            row[node.tag]=node.text
-                    rowsEZ.append(row)  
+                row={}
+                for node in tree.iter():
+                    row.update(node.attrib)
+                    if node.text and not node.text.isspace():
+                        row[node.tag]=node.text
+                rowsEZ.append(row)  
             df=pd.DataFrame(rowsEZ)
             #df.drop_duplicates()
             df.to_csv(directory+'\990EZdata.csv')
             else tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990') != None:
-                rows=[]
-                for elem in root:
-                    row={}
-                    for node in tree.iter():
-                        row.update(node.attrib)
-                        if node.text and not node.text.isspace():
-                            row[node.tag]=node.text
-                    rows.append(row)
+                row={}
+                for node in tree.iter():
+                    row.update(node.attrib)
+                    if node.text and not node.text.isspace():
+                        row[node.tag]=node.text
+                rows.append(row)
             df=pd.DataFrame(rows)
             #df.drop_duplicates()
             df.to_csv(directory+'\990data.csv')
