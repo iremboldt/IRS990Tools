@@ -63,21 +63,22 @@ Class IRS990:
     
     #This function works the same as removeState, but uses the city tags/location
     def removeCity(directory):
-            for file in os.listdir(directory):
+        for file in os.listdir(directory):
             temppath = os.fsencode(file)
             filename = os.fsdecode(temppath)
             tree = ET.parse(directory+'\\'+filename)
             root = tree.getroot()
-            #the following code replaced trying to search by index, and I just put in the xml path. the part that threw me off was starting with the irs url each time.
+            #The following code replaced trying to search by index, and I just put in the xml path. the part that threw me off was starting with the irs url each time.
+            #The try catch is so that you can see files that did not have the correct file strucure. It also accounts for foreign companny addresses, which use differen tags
             try:
-                city = tree.find('.//{http://www.irs.gov/efile}ReturnHeader/{http://www.irs.gov/efile}Filer/{http://www.irs.gov/efile}USAddress/{http://www.irs.gov/efile}CityNm').text
-                try:
-                    if city != 'Lincoln':
-                        os.remove(directory+'\\'+filename)
-                    else:
-                        continue
-                except:
-                     print('child index out of range for '+filename)
+                city = tree.find('.//{http://www.irs.gov/efile}ReturnHeader/{http://www.irs.gov/efile}Filer/{http://www.irs.gov/efile}USAddress/{http://www.irs.gov/efile}StateAbbreviationCd').text
+                if state != 'NE':
+                    os.remove(directory+'\\'+filename)
+                else:
+                    continue
+            except:
+                 print('child index out of range for '+filename)
+
     
     #This method is developed from the removeStates function, but it extracts EINs from the expected xml path and adds them to a list
     def getEIN(directory):
