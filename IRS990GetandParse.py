@@ -71,7 +71,7 @@ Class IRS990:
             #The following code replaced trying to search by index, and I just put in the xml path. the part that threw me off was starting with the irs url each time.
             #The try catch is so that you can see files that did not have the correct file strucure. It also accounts for foreign companny addresses, which use differen tags
             try:
-                city = tree.find('.//{http://www.irs.gov/efile}ReturnHeader/{http://www.irs.gov/efile}Filer/{http://www.irs.gov/efile}USAddress/{http://www.irs.gov/efile}StateAbbreviationCd').text
+                city = tree.find('.//{http://www.irs.gov/efile}ReturnHeader/{http://www.irs.gov/efile}Filer/{http://www.irs.gov/efile}USAddress/{http://www.irs.gov/efile}CityNm').text
                 if state != 'NE':
                     os.remove(directory+'\\'+filename)
                 else:
