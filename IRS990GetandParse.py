@@ -120,13 +120,15 @@ Class IRS990:
                         row[node.tag]=node.text
                 rowsEZ.append(row)  
 
-            else tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990') != None:
+            elif tree.find('.//{http://www.irs.gov/efile}ReturnData/{http://www.irs.gov/efile}IRS990') != None:
                 row={}
                 for node in tree.iter():
                     row.update(node.attrib)
                     if node.text and not node.text.isspace():
                         row[node.tag]=node.text
                 rows.append(row)
+            else:
+                continue
             
             #Export all data into csvs
             df=pd.DataFrame(rows)
