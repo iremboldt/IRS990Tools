@@ -139,3 +139,18 @@ Class IRS990:
             
             df=pd.DataFrame(rowsEZ)
             df.to_csv(directory+'\990EZdata.csv')
+
+    def findXMLbyEIN(directory,EIN)
+        for file in os.listdir(dir2):
+            temppath = os.fsencode(file)
+            filename = os.fsdecode(temppath)
+            tree = ET.parse(dir2+'\\'+filename)
+            root = tree.getroot()
+            try:
+                target = tree.find('.//{http://www.irs.gov/efile}ReturnHeader/{http://www.irs.gov/efile}Filer/{http://www.irs.gov/efile}EIN').text
+                if target == EIN:
+                    print(filename)
+                else:
+                    continue
+            except:
+                print('File not found.')
