@@ -72,10 +72,10 @@ Class IRS990:
             #The try catch is so that you can see files that did not have the correct file strucure. It also accounts for foreign companny addresses, which use differen tags
             try:
                 city = tree.find('.//{http://www.irs.gov/efile}ReturnHeader/{http://www.irs.gov/efile}Filer/{http://www.irs.gov/efile}USAddress/{http://www.irs.gov/efile}CityNm').text
-                if city != 'Lincoln' or city != 'LINCOLN':
-                    os.remove(directory+'\\'+filename)
-                else:
+                if city == 'Lincoln' or city == 'LINCOLN':
                     continue
+                else:
+                    os.remove(directory+'\\'+filename)
             except:
                  print('child index out of range for '+filename)
 
