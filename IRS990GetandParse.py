@@ -5,7 +5,7 @@ import pandas as pd
 import requests
 import urllib.request
 
-Class IRS990:
+Class IRS990Tools:
 
     def __init__(self,directory,*years):
         self.directory=directory
