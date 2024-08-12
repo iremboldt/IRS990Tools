@@ -1,6 +1,6 @@
 import os
 import xml.etree.ElementTree as ET
-from zipfile import ZipFile
+from zipfile import zipfile
 import pandas as pd
 import requests
 import urllib.request
@@ -13,9 +13,12 @@ Class IRS990Tools:
 
     # input is zip file location, output is desired extract location
     def extractzip(directory):
-        for input in os.path(directory):
-            with ZipFile(input, 'r') as zObject: 
-                zObject.extractall(path=directory+\\+input) 
+        temppath = os.fsencode(file)
+        filename = os.fsdecode(temppath)
+        path=(r'D:\Temp\Temp'+'\\'+file)
+        if file.endswith('.zip'):
+                with ZipFile(path,'r') as item:
+                    item.extractall()
     
     #This function downloads and saves 990 zip repositories from the irs website using their naming convention
     #Input is the directory you want to save to and a wildcard argument to allow multiple years
