@@ -27,6 +27,11 @@ class IRS990Tools:
             if file.endswith('.zip'):
                     with zipfile.ZipFile(path,'r') as item:
                         item.extractall()
+                        try:
+                            os.close(path)
+                        except:
+                            print('Could not close '+path)
+                            continue
                         #if removeStates = True:
                             #removeStates(directory+'\\'+newdirectory)
     
