@@ -10,6 +10,30 @@ class IRS990Tools:
     def __init__(self,directory):
         self.directory=directory
 
+    #This function downloads and saves 990 zip repositories from the irs website using their naming convention
+    #Input is the directory you want to save to and a wildcard argument to allow multiple years
+    def get990s(self,*years):
+        directory=self.directory
+        for year in years:
+            monthcodes = ['01A','01B','01C','02A','02B','02C','03A','03B','03C','04A','04B','04C','05A','05B','05C','06A','06B','06C','07A','07B','07C','08A','08B','08C','09A','09B','09C','10A','10B','10C','11A','11B','11C','12A','12B','12C']
+            for month in monthcodes:
+                #Current IRS 990 website
+                url = 'https://apps.irs.gov/pub/epostcard/990/xml/'+year+'/'+year+'_TEOS_XML_'+month+'.zip'
+                file = requests.get(url)
+                #dump = file.raw
+                if file.status_code == 200:
+                    location = os.path.abspath(directory)
+                    filename = 'returns'+month+year+'.zip'
+                    with open(location+filename, 'wb') as filelocation:
+                        filelocation.write(file.content)
+                else:
+                    print(year+'_TEOS_XML_'+month+'.zip does not exist')
+                #del dump
+                #import urllib.request
+                #f = open('00000001.jpg','wb')
+                #f.write(urllib.request.urlopen('http://www.gunnerkrigg.com//comics/00000001.jpg').read())
+                #f.close()
+
     # input is a directory of zip files, output is the same folder structure but unzipped
     def extractzip(self):
         #Add Y/N as input for running removeStates() at next comment. Otherwise the 990 forms get huge.
@@ -34,31 +58,7 @@ class IRS990Tools:
                             continue
                         #if removeStates = True:
                             #removeStates(directory+'\\'+newdirectory)
-    
-    #This function downloads and saves 990 zip repositories from the irs website using their naming convention
-    #Input is the directory you want to save to and a wildcard argument to allow multiple years
-    def get990s(self,*years):
-        directory=self.directory
-        for year in years:
-            monthcodes = ['01A','01B','01C','02A','02B','02C','03A','03B','03C','04A','04B','04C','05A','05B','05C','06A','06B','06C','07A','07B','07C','08A','08B','08C','09A','09B','09C','10A','10B','10C','11A','11B','11C','12A','12B','12C']
-            for month in monthcodes:
-                #Current IRS 990 website
-                url = 'https://apps.irs.gov/pub/epostcard/990/xml/'+year+'/'+year+'_TEOS_XML_'+month+'.zip'
-                file = requests.get(url)
-                #dump = file.raw
-                if file.status_code == 200:
-                    location = os.path.abspath(directory)
-                    filename = 'returns'+month+year+'.zip'
-                    with open(location+filename, 'wb') as filelocation:
-                        filelocation.write(file.content)
-                else:
-                    print(year+'_TEOS_XML_'+month+'.zip does not exist')
-                #del dump
-                #import urllib.request
-                #f = open('00000001.jpg','wb')
-                #f.write(urllib.request.urlopen('http://www.gunnerkrigg.com//comics/00000001.jpg').read())
-                #f.close()
-                
+                    
     #iterate through files in the directory and remove xmls with business address not in Nebraska (NE)
     def removeStates(self,state):
         directory=self.directory
@@ -103,7 +103,33 @@ class IRS990Tools:
             except:
                  print('child index out of range for '+filename)
 
-    
+    # input is a directory of zip files, output is the same folder structure but unzipped
+    def extractzipmini(self,statecode,citycode):
+        #Add Y/N as input for running removeStates() at next comment. Otherwise the 990 forms get huge.
+        directory=self.directory
+        for file in os.listdir(directory):
+            temppath = os.fsencode(file)
+            filename = os.fsdecode(temppath)
+            try:
+                os.makedirs(directory+'\\'+os.path.splitext(file)[0])
+            except:
+                os.chdir(directory+'\\'+os.path.splitext(file)[0])
+            os.chdir(directory+'\\'+os.path.splitext(file)[0])
+            #Add option to dump all xmls into one file?
+            path=(directory+'\\'+file)
+            if file.endswith('.zip'):
+                    with zipfile.ZipFile(path,'r') as item:
+                        item.extractall()
+                        self.removeStates(statecode)
+                        self.removeCity(citycode)
+                        try:
+                            os.close(path)
+                        except:
+                            print('Could not close '+path)
+                            continue
+                        #if removeStates = True:
+                            #removeStates(directory+'\\'+newdirectory)
+ 
     #This method is developed from the removeStates function, but it extracts EINs from the expected xml path and adds them to a list
     def getEIN(self):
         directory=self.directory
