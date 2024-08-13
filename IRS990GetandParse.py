@@ -1,11 +1,11 @@
 import os
 import xml.etree.ElementTree as ET
-from zipfile import zipfile
+import zipfile
 import pandas as pd
 import requests
 import urllib.request
 
-Class IRS990Tools:
+class IRS990Tools:
 
     def __init__(self,directory,*years):
         self.directory=directory
@@ -153,7 +153,7 @@ Class IRS990Tools:
             df=pd.DataFrame(rowsEZ)
             df.to_csv(directory+'\990EZdata.csv')
 
-    def findXMLbyEIN(directory,EIN)
+    def findXMLbyEIN(directory,EIN):
         for file in os.listdir(dir2):
             temppath = os.fsencode(file)
             filename = os.fsdecode(temppath)
