@@ -17,7 +17,10 @@ class IRS990Tools:
         for file in os.listdir(directory):
             temppath = os.fsencode(file)
             filename = os.fsdecode(temppath)
-            os.makedirs(directory+'\\'+os.path.splitext(file)[0])
+            try:
+                os.makedirs(directory+'\\'+os.path.splitext(file)[0])
+            except:
+                os.chdir(directory+'\\'+os.path.splitext(file)[0])
             os.chdir(directory+'\\'+os.path.splitext(file)[0])
             #Add option to dump all xmls into one file?
             path=(directory+'\\'+file)
