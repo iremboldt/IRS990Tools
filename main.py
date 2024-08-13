@@ -4,7 +4,7 @@ import zipfile
 import pandas as pd
 import requests
 import urllib.request
-import IRS990Tools.py
+from IRS990Tools.py import IRS990Tools
 
 directory=input("Enter target directory: ")
 IRSTools=IRS990Tools(directory)
