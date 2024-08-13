@@ -11,8 +11,9 @@ class IRS990Tools:
         self.directory=directory
 
     # input is a directory of zip files, output is the same folder structure but unzipped
-    def extractzip():
+    def extractzip(self):
         #Add Y/N as input for running removeStates() at next comment. Otherwise the 990 forms get huge.
+        directory=self.directory
         for file in os.listdir(directory):
             temppath = os.fsencode(file)
             filename = os.fsdecode(temppath)
@@ -28,7 +29,8 @@ class IRS990Tools:
     
     #This function downloads and saves 990 zip repositories from the irs website using their naming convention
     #Input is the directory you want to save to and a wildcard argument to allow multiple years
-    def get990s(*years):
+    def get990s(self,*years):
+        directory=self.directory
         for year in years:
             monthcodes = ['01A','01B','01C','02A','02B','02C','03A','03B','03C','04A','04B','04C','05A','05B','05C','06A','06B','06C','07A','07B','07C','08A','08B','08C','09A','09B','09C','10A','10B','10C','11A','11B','11C','12A','12B','12C']
             for month in monthcodes:
@@ -50,7 +52,8 @@ class IRS990Tools:
                 #f.close()
                 
     #iterate through files in the directory and remove xmls with business address not in Nebraska (NE)
-    def removeStates(state):
+    def removeStates(self,state):
+        directory=self.directory
         for file in os.listdir(directory):
             temppath = os.fsencode(file)
             filename = os.fsdecode(temppath)
@@ -74,7 +77,8 @@ class IRS990Tools:
                     print('State not found at expected index for '+filename)
     
     #This function works the same as removeState, but uses the city tags/location
-    def removeCity(city):
+    def removeCity(self,city):
+        directory=self.directory
         for file in os.listdir(directory):
             temppath = os.fsencode(file)
             filename = os.fsdecode(temppath)
@@ -93,7 +97,8 @@ class IRS990Tools:
 
     
     #This method is developed from the removeStates function, but it extracts EINs from the expected xml path and adds them to a list
-    def getEIN():
+    def getEIN(self):
+        directory=self.directory
         eidList=[]
         for file in os.listdir(directory):
             filename = os.fsencode(file)
@@ -103,11 +108,12 @@ class IRS990Tools:
             eidList.append(EIN)       
 
     # This will convert multiple 990 xml documents into rows on a csv, which will them be able to imported to excel to be sorted
-    def xmltocsv():        
+    def xmltocsv(self):        
         # Parsing the XML file
         rows=[]
         rowsPF=[]
         rowsEZ=[]
+        directory=self.directory
         for file in os.listdir(directory):
             #Assign path like normal
             temppath = os.fsencode(file)
@@ -152,7 +158,8 @@ class IRS990Tools:
             df=pd.DataFrame(rowsEZ)
             df.to_csv(directory+'\990EZdata.csv')
 
-    def findXMLbyEIN(EIN):
+    def findXMLbyEIN(self,EIN):
+        directory=self.directory
         for file in os.listdir(dir2):
             temppath = os.fsencode(file)
             filename = os.fsdecode(temppath)
