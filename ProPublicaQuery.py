@@ -3,7 +3,7 @@ import csv
 import json
 import pandas as pd
 
-Class Propublica:
+class Propublica:
 
   def __init__(self,eins,names)
     #add a string to the end to return a .json with data for that organization
@@ -14,19 +14,22 @@ Class Propublica:
     eins = self.eins
     names = self.names
   
-  def geteins(names):
-    for name in names:
+'''
+  def geteins(self):
+    for name in self.names:
       response = requests.get(NameSearchURL+name)
       #Parse the returned json for the ein and append to eins list
     return(eins)
-  
-  def getTaxInfo(eins):
+'''
+'''  
+  def getTaxInfo(self):
       TaxInfo = []
-      for ein in eins:
+      for ein in self.eins:
         response = requests.get(OrgSearchURL+ein+'.json')
         #Parse the json and append data to the list, or create a series of csvs
         return(TaxInfo)
-  
+'''
+'''
   def writeCSV():
     #x=json.loads(response.content)
     #for x in x:
@@ -57,3 +60,4 @@ Class Propublica:
               print('ein does not exist for '+np)
         else:
           print('data not found for'+np)
+'''
