@@ -7,12 +7,11 @@ import urllib.request
 
 class IRS990Tools:
 
-    def __init__(self,directory,*years):
+    def __init__(self,directory):
         self.directory=directory
-        self.years=[years]
 
     # input is a directory of zip files, output is the same folder structure but unzipped
-    def extractzip(directory):
+    def extractzip():
         #Add Y/N as input for running removeStates() at next comment. Otherwise the 990 forms get huge.
         for file in os.listdir(directory):
             temppath = os.fsencode(file)
@@ -29,7 +28,7 @@ class IRS990Tools:
     
     #This function downloads and saves 990 zip repositories from the irs website using their naming convention
     #Input is the directory you want to save to and a wildcard argument to allow multiple years
-    def get990s(directory,*years):
+    def get990s(*years):
         for year in years:
             monthcodes = ['01A','01B','01C','02A','02B','02C','03A','03B','03C','04A','04B','04C','05A','05B','05C','06A','06B','06C','07A','07B','07C','08A','08B','08C','09A','09B','09C','10A','10B','10C','11A','11B','11C','12A','12B','12C']
             for month in monthcodes:
@@ -51,7 +50,7 @@ class IRS990Tools:
                 #f.close()
                 
     #iterate through files in the directory and remove xmls with business address not in Nebraska (NE)
-    def removeStates(directory):
+    def removeStates(state):
         for file in os.listdir(directory):
             temppath = os.fsencode(file)
             filename = os.fsdecode(temppath)
@@ -60,9 +59,9 @@ class IRS990Tools:
             #The following code replaced trying to search by index, and I just put in the xml path. the part that threw me off was starting with the irs url each time.
             #The try catch is so that you can see files that did not have the correct file strucure. It also accounts for foreign companny addresses, which use differen tags
             try:
-                state = tree.find('.//{http://www.irs.gov/efile}ReturnHeader/{http://www.irs.gov/efile}Filer/{http://www.irs.gov/efile}USAddress/{http://www.irs.gov/efile}StateAbbreviationCd').text
+                stateindex = tree.find('.//{http://www.irs.gov/efile}ReturnHeader/{http://www.irs.gov/efile}Filer/{http://www.irs.gov/efile}USAddress/{http://www.irs.gov/efile}StateAbbreviationCd').text
                 try:
-                    if state != 'NE':
+                    if stateindex != state:
                         os.remove(directory+'\\'+filename)
                     else:
                         continue
@@ -75,7 +74,7 @@ class IRS990Tools:
                     print('State not found at expected index for '+filename)
     
     #This function works the same as removeState, but uses the city tags/location
-    def removeCity(directory):
+    def removeCity(city):
         for file in os.listdir(directory):
             temppath = os.fsencode(file)
             filename = os.fsdecode(temppath)
@@ -84,8 +83,8 @@ class IRS990Tools:
             #The following code replaced trying to search by index, and I just put in the xml path. the part that threw me off was starting with the irs url each time.
             #The try catch is so that you can see files that did not have the correct file strucure. It also accounts for foreign companny addresses, which use differen tags
             try:
-                city = tree.find('.//{http://www.irs.gov/efile}ReturnHeader/{http://www.irs.gov/efile}Filer/{http://www.irs.gov/efile}USAddress/{http://www.irs.gov/efile}CityNm').text
-                if city == 'Lincoln' or city == 'LINCOLN':
+                cityindex = tree.find('.//{http://www.irs.gov/efile}ReturnHeader/{http://www.irs.gov/efile}Filer/{http://www.irs.gov/efile}USAddress/{http://www.irs.gov/efile}CityNm').text
+                if cityindex == city or cityindex == city.upper():
                     continue
                 else:
                     os.remove(directory+'\\'+filename)
@@ -94,7 +93,7 @@ class IRS990Tools:
 
     
     #This method is developed from the removeStates function, but it extracts EINs from the expected xml path and adds them to a list
-    def getEIN(directory):
+    def getEIN():
         eidList=[]
         for file in os.listdir(directory):
             filename = os.fsencode(file)
@@ -104,7 +103,7 @@ class IRS990Tools:
             eidList.append(EIN)       
 
     # This will convert multiple 990 xml documents into rows on a csv, which will them be able to imported to excel to be sorted
-    def xmltocsv(directory):        
+    def xmltocsv():        
         # Parsing the XML file
         rows=[]
         rowsPF=[]
@@ -153,7 +152,7 @@ class IRS990Tools:
             df=pd.DataFrame(rowsEZ)
             df.to_csv(directory+'\990EZdata.csv')
 
-    def findXMLbyEIN(directory,EIN):
+    def findXMLbyEIN(EIN):
         for file in os.listdir(dir2):
             temppath = os.fsencode(file)
             filename = os.fsdecode(temppath)
