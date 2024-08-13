@@ -11,14 +11,21 @@ Class IRS990Tools:
         self.directory=directory
         self.years=[years]
 
-    # input is zip file location, output is desired extract location
+    # input is a directory of zip files, output is the same folder structure but unzipped
     def extractzip(directory):
-        temppath = os.fsencode(file)
-        filename = os.fsdecode(temppath)
-        path=(r'D:\Temp\Temp'+'\\'+file)
-        if file.endswith('.zip'):
-                with ZipFile(path,'r') as item:
-                    item.extractall()
+        #Add Y/N as input for running removeStates() at next comment. Otherwise the 990 forms get huge.
+        for file in os.listdir(directory):
+            temppath = os.fsencode(file)
+            filename = os.fsdecode(temppath)
+            os.makedirs(directory+'\\'+os.path.splitext(file)[0])
+            os.chdir(directory+os.path.splitext(file)[0])
+            #Add option to dump all xmls into one file?
+            path=(directory+'\\'+file)
+            if file.endswith('.zip'):
+                    with zipfile.ZipFile(path,'r') as item:
+                        item.extractall()
+                        #if removeStates = True:
+                            #removeStates(directory+'\\'+newdirectory)
     
     #This function downloads and saves 990 zip repositories from the irs website using their naming convention
     #Input is the directory you want to save to and a wildcard argument to allow multiple years
