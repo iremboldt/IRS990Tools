@@ -37,10 +37,13 @@ Class IRS990Tools:
                 url = 'https://apps.irs.gov/pub/epostcard/990/xml/'+year+'/'+year+'_TEOS_XML_'+month+'.zip'
                 file = requests.get(url)
                 #dump = file.raw
-                location = os.path.abspath(directory)
-                filename = 'returns'+month+year+'.zip'
-                with open(location+filename, 'wb') as filelocation:
-                    filelocation.write(file.content)
+                if file.status_code == 200:
+                    location = os.path.abspath(directory)
+                    filename = 'returns'+month+year+'.zip'
+                    with open(location+filename, 'wb') as filelocation:
+                        filelocation.write(file.content)
+                else:
+                    print(year+'_TEOS_XML_'+month+'.zip does not exist')
                 #del dump
                 #import urllib.request
                 #f = open('00000001.jpg','wb')
